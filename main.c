@@ -21,6 +21,12 @@ float* init_vector(size_t n) {
     return v;
 }
 
+void print_first_5(float* v) {
+	for (int i = 0; i < 5; i++) {
+		printf("%.2f ", v[i]);
+	}
+}
+
 int main() {
 	srand((unsigned int)time(NULL));
 
@@ -30,10 +36,15 @@ int main() {
 	printf("\n>> Vector size: %zu\n", size);
 	printf(">> Generating vector A and B...\n\n");
 
-	printf("===================================================\n\n");
-
 	float* a = init_vector(size);
 	float* b = init_vector(size);
+
+	printf(">> First 5 for vector A:\n");
+	print_first_5(a);
+	printf("\n>> First 5 for vector B:\n");
+	print_first_5(b);
+
+	printf("\n\n===================================================\n\n");
 
 	float sdot_val = 0.0f;
 	float* sdot = &sdot_val;
