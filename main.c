@@ -1,68 +1,58 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
+#include <time.h>    
 
 // x86-64 Kernel
-extern float asmsdot(float *a, float *b, int size);
+extern void asmsdot(float *a, float *b, int size, float* sdot);
 
 // C Kernel
-float sdot(float* a, float* b, int size);
+void c_sdot(float* a, float* b, int size, float* sdot);
+
+// Timer
+double time_kernel(void (*kernel)(float*, float*, int, float*), float* a, float* b, int size, float* sdot, int runs);
+
+// For generating vector based on size
+float* init_vector(size_t n) {
+    float* v = (float*)malloc(n * sizeof(float));
+    for (size_t i = 0; i < n; i++) {
+        v[i] = (float)rand() / RAND_MAX;
+    }
+    return v;
+}
 
 int main() {
-	/*
-	// Size input
-	int size = 0;
-	printf("Size: ");
-	scanf("%d", size);
+	srand((unsigned int)time(NULL));
 
-	// Allocate arrays
-	float* a = (float*)malloc(size * sizeof(float));
-	float* b = (float*)malloc(size * sizeof(float));
+	int runs = 25; // Adjust runs here
+	size_t size = 16777216; // Adjust size here
 
-	// Input vector a
-	printf("Enter %d elements for vector a (space-separated):\n", size);
-	for (int i = 0; i < size; i++) {
-		scanf("%f", &a[i]);
-	}
+	printf("\n>> Vector size: %zu\n", size);
+	printf(">> Generating vector A and B...\n\n");
 
-	// Input vector b
-	printf("Enter %d elements for vector b (space-separated):\n", size);
-	for (int i = 0; i < size; i++) {
-		scanf("%f", &b[i]);
-	}
+	printf("===================================================\n\n");
 
-	// Print vectors to check
-	printf("Vector a: ");
-	for (int i = 0; i < size; i++) printf("%.2f ", a[i]);
-	printf("\n");
+	float* a = init_vector(size);
+	float* b = init_vector(size);
 
-	printf("Vector b: ");
-	for (int i = 0; i < size; i++) printf("%.2f ", b[i]);
-	printf("\n");
-	
-	*/
+	float sdot_val = 0.0f;
+	float* sdot = &sdot_val;
 
-	// === TEST VARIABLES
-	int size = 5;
-	
-	// Allocate arrays
-	float* a = (float*)malloc(size * sizeof(float));
-	float* b = (float*)malloc(size * sizeof(float));
+	// Time
+	printf(">> ASM Kernel...\n\n");
+	double time_asm = time_kernel(asmsdot, a, b, size, sdot, runs);
+	asmsdot(a, b, size, sdot);
+	printf("\n>> Dot product result (ASM): %.2f\n", *(sdot));
+	printf(">> Average Time of ASM Kernel: %.6f\n\n", time_asm);
 
-	a[0] = 1.5f;   b[0] = 2.2f;
-	a[1] = 3.1f;   b[1] = 4.7f;
-	a[2] = 5.5f;   b[2] = 6.6f;
-	a[3] = 7.29f;  b[3] = 8.1f;
-	a[4] = 9.9f;   b[4] = 10.11f;
-	// === TEST VARIABLES
+	printf("===================================================\n\n");
 
-	// Call x86-64 Kernel
-	float res_asm = asmsdot(a, b, size);
-	printf("Dot product result (ASM): %.2f\n", res_asm);
+	printf(">> C Kernel...\n\n");
+	double time_c = time_kernel(c_sdot, a, b, size, sdot, runs);
+	printf("\n>> Dot product result (C): %.2f\n", *(sdot));
+	printf(">> Average Time of C Kernel: %.6f\n\n", time_c);
 
-	// Call C Kernel
-	float res_c = sdot(a, b, size);
-	printf("Dot product result (C): %.2f\n", res_c);
+	printf("===================================================\n");
 
 	// Free memory
 	free(a);
