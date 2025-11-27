@@ -73,8 +73,3 @@ When the vector size reaches 2^30, the difference becomes significant. The avera
 **Vector B** (first 5): 0.11, 0.76, 0.24, 0.52, 0.97, ...  
 
 ![Screenshot](images/2^30_ASM_ExecutionTime.png)  
-
----
-## Video Presentation
-
-Insert Video Presentation
