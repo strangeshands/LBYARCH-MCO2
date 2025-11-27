@@ -6,8 +6,7 @@
  *	float *a:	contains values for vector a
  *	float *b:	contains valus for vector b
  *	int size:	size of the vector;
- * 
- *	return float:	the dot product
+ *	float* sdot:	contains the address of the result
  */
 void c_sdot(float* a, float* b, int size, float* sdot) {
 	float sdot_res = 0.0f;
