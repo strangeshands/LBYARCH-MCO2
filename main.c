@@ -12,6 +12,8 @@ void c_sdot(float* a, float* b, int size, float* sdot);
 // Timer
 double time_kernel(void (*kernel)(float*, float*, int, float*), float* a, float* b, int size, float* sdot, int runs);
 
+// =======================================
+
 // For generating vector based on size
 float* init_vector(size_t n) {
     float* v = (float*)malloc(n * sizeof(float));
@@ -21,11 +23,14 @@ float* init_vector(size_t n) {
     return v;
 }
 
+// Printing the first 5 of vector
 void print_first_5(float* v) {
 	for (int i = 0; i < 5; i++) {
 		printf("%.2f ", v[i]);
 	}
 }
+
+// =======================================
 
 int main() {
 	srand((unsigned int)time(NULL));
@@ -46,6 +51,7 @@ int main() {
 
 	printf("\n\n===================================================\n\n");
 
+	// Result storage
 	float sdot_val = 0.0f;
 	float* sdot = &sdot_val;
 

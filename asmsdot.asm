@@ -26,6 +26,6 @@ asmsdot:
 		JMP SDOT_LOOP
 
 	DONE:
-		MOVSS dword[sdot], XMM0	; store output to sdot
-		MOVSS [R9], XMM0
+		MOVSS dword[sdot], XMM0		; store output to sdot
+		MOVSS [R9], XMM0			; R9 holds the address of the result (C)
 		ret
