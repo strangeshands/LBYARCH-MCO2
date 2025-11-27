@@ -1,9 +1,6 @@
 section .data
 ini dd 0.0
 
-section .bss
-sdot		resd 1
-
 section .text
 bits 64
 default rel
@@ -26,6 +23,5 @@ asmsdot:
 		JMP SDOT_LOOP
 
 	DONE:
-		MOVSS dword[sdot], XMM0		; store output to sdot
 		MOVSS [R9], XMM0			; R9 holds the address of the result (C)
 		ret
